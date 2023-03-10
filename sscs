@@ -1,0 +1,90 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+
+using namespace std;
+
+//Student class with attributes
+class Student {
+public:
+    string name;
+    int semester;
+    int marks[2][3]; //2 semesters and 3 subjects
+    float avgMarks;
+};
+
+//List of Students
+vector<Student> students;
+
+//Method to add a new student
+void addStudent(string name, int semester) {
+    Student student;
+    student.name = name;
+    student.semester = semester;
+    student.avgMarks = 0.0f;
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 3; j++) {
+            student.marks[i][j] = 0;
+        }
+    }
+    students.push_back(student);
+}
+
+//Method to add marks of a student for a particular subject and semester
+void addMarks(string name, int semester, int subject, int marks) {
+    for (int i = 0; i < students.size(); i++) {
+        if (students[i].name == name && students[i].semester == semester) {
+            students[i].marks[semester - 1][subject - 1] = marks;
+            break;
+        }
+    }
+}
+
+//Method to calculate the average percentage of the whole class in the recent semester
+float avgPercentageRecentSemester() {
+    int totalMarks = 0;
+    int totalStudents = 0;
+    int recentSemester = 2; //recent semester is 2
+    for (int i = 0; i < students.size(); i++) {
+        if (students[i].semester == recentSemester) {
+            totalStudents++;
+            for (int j = 0; j < 3; j++) {
+                totalMarks += students[i].marks[recentSemester - 1][j];
+            }
+        }
+    }
+    return (float)totalMarks / (float)(totalStudents * 3) * 100;
+}
+
+//Method to calculate the average marks of students in a particular subject
+float avgMarksSubject(int subject) {
+    int totalMarks = 0;
+    int totalStudents = 0;
+    for (int i = 0; i < students.size(); i++) {
+        for (int j = 0; j < 2; j++) {
+            totalStudents++;
+            totalMarks += students[i].marks[j][subject - 1];
+        }
+    }
+    return (float)totalMarks / (float)(totalStudents);
+}
+
+//Method to find the top 2 consistent students across all semesters based on their maximum average marks
+void top2ConsistentStudents() {
+    for (int i = 0; i < students.size(); i++) {
+        float totalMarks = 0.0f;
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 3; k++) {
+                totalMarks += students[i].marks[j][k];
+            }
+        }
+        students[i].avgMarks = totalMarks / 6.0f;
+    }
+
+    sort(students.begin(), students.end(), [](const Student& a, const Student& b) {
+        return a.avgMarks > b.avgMarks;
+    });
+
+    cout << "Top 2 consistent students:" << endl;
+   
