@@ -1,0 +1,27 @@
+{
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "text"
+      },
+      "roll_number": {
+        "type": "keyword"
+      },
+      "email": {
+        "type": "text"
+      },
+      "semester": {
+        "type": "integer"
+      },
+      "english_marks": {
+        "type": "integer"
+      },
+      "maths_marks": {
+        "type": "integer"
+      },
+      "science_marks": {
+        "type": "integer"
+      }
+    }
+  }
+}
